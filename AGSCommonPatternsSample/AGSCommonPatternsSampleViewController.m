@@ -25,6 +25,7 @@
 													 AGSMapViewCalloutDelegate,
 													 AGSClosestFacilityTaskDelegate,
 													 AGSServiceAreaTaskDelegate,
+													 AGSQueryTaskDelegate,
 													 AGSMapViewLayerDelegate>
 @property (weak, nonatomic) IBOutlet AGSMapView *mapView;
 @property (nonatomic, strong) AGSWebMap *webMap;
@@ -34,6 +35,8 @@
 
 @property (nonatomic, strong) AGSClosestFacilityTask *closestFacilityTask;
 @property (nonatomic, strong) AGSServiceAreaTask *driveTimeTask;
+@property (nonatomic, strong) AGSQueryTask *queryTask;
+
 @property (nonatomic, strong) AGSServiceAreaTaskParameters *defaultDriveTimeParams;
 @property (nonatomic, strong) AGSGraphic *driveTimeGraphic;
 
@@ -49,9 +52,12 @@
 #define kClosestFacilityTaskURL @"http://route.arcgis.com/arcgis/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World"
 #define kWebMapID @"8c4288bb0da4493aa85947d7a400a952"
 
-#define kDriveTimeLimitInMinutes 70
+#define kDriveTimeInitialRangeInMinutes 30
+#define kDriveTimeExpansionTime 30
+#define kDriveTimeMaxRange 300
 
 #define kSearchPointKey @"AGSBrewerySearchPoint"
+#define kSearchRangeKey @"AGSBrewerySearchRange"
 
 - (void)viewDidLoad
 {
@@ -75,7 +81,10 @@
     {
         self.featureServiceURL = ((AGSFeatureLayer *)layer).URL;
 		foundLayer = YES;
-    }
+
+		self.queryTask = [AGSQueryTask queryTaskWithURL:self.featureServiceURL];
+		self.queryTask.delegate = self;
+	}
 }
 
 -(void)didOpenWebMap:(AGSWebMap *)webMap intoMapView:(AGSMapView *)mapView
@@ -132,12 +141,14 @@
 								   infoTemplateDelegate:nil];
 		[self.resultsLayer addGraphic:g];
 		
+		[self startAnimation];
+		
 		// Get a drivetime area first to limit the features we're dealing with.
-		[self getConstraintAreaAroundPoint:g];
+		[self getConstraintAreaAroundPoint:g withRange:kDriveTimeInitialRangeInMinutes];
 	}
 }
 
--(void)getConstraintAreaAroundPoint:(AGSGraphic *)searchGraphic
+-(void)getConstraintAreaAroundPoint:(AGSGraphic *)searchGraphic withRange:(int)range
 {
 	if (self.defaultDriveTimeParams)
 	{
@@ -152,14 +163,14 @@
 		[serviceAreaParams setFacilitiesWithFeatures:[NSArray arrayWithObject:searchGraphic]];
 
 		NSMutableArray *breaks = [NSMutableArray array];
-		[breaks addObject:[NSNumber numberWithInt:kDriveTimeLimitInMinutes]];
+		NSNumber *rangeNum = [NSNumber numberWithInt:range];
+		[breaks addObject:rangeNum];
 		serviceAreaParams.defaultBreaks = breaks;
 
 		NSOperation *op = [self.driveTimeTask solveServiceAreaWithParameters:serviceAreaParams];
 		
-		[self startAnimation];
-
 		objc_setAssociatedObject(op, kSearchPointKey, searchGraphic, OBJC_ASSOCIATION_RETAIN);
+		objc_setAssociatedObject(op, kSearchRangeKey, rangeNum, OBJC_ASSOCIATION_RETAIN);
 	}
 	else
 	{
@@ -171,31 +182,27 @@
 	}
 }
 
--(void)serviceAreaTask:(AGSServiceAreaTask *)serviceAreaTask operation:(NSOperation *)op didRetrieveDefaultServiceAreaTaskParameters:(AGSServiceAreaTaskParameters *)serviceAreaParams
-{
-	NSLog(@"Got default drive time parameters");
-	self.defaultDriveTimeParams = serviceAreaParams;
-}
-
--(void)serviceAreaTask:(AGSServiceAreaTask *)serviceAreaTask operation:(NSOperation *)op didFailToRetrieveDefaultServiceAreaTaskParametersWithError:(NSError *)error
-{
-	NSLog(@"Failed to get default service area parameters: %@", error);
-}
-
 -(void)serviceAreaTask:(AGSServiceAreaTask *)serviceAreaTask operation:(NSOperation *)op didSolveServiceAreaWithResult:(AGSServiceAreaTaskResult *)serviceAreaTaskResult
 {
 	NSLog(@"Got service area…");
 	AGSGraphic *searchGraphic = objc_getAssociatedObject(op, kSearchPointKey);
-	
-	[self.resultsLayer removeAllGraphics];
+	NSNumber *searchRange = objc_getAssociatedObject(op, kSearchRangeKey);
 	
 	if (serviceAreaTaskResult.serviceAreaPolygons.count > 0)
 	{
 		AGSGraphic *serviceArea = serviceAreaTaskResult.serviceAreaPolygons[0];
 		self.driveTimeGraphic = serviceArea;
-		// Get 3 nearest features
-		[self findNearest:3 itemsToMapPointGraphic:searchGraphic within:serviceArea];
 
+		AGSQuery *query = [AGSQuery query];
+		query.geometry = serviceArea.geometry;
+		query.outSpatialReference = self.mapView.spatialReference;
+		query.returnGeometry = YES;
+
+		NSOperation *op = [self.queryTask executeWithQuery:query];
+		objc_setAssociatedObject(op, kSearchPointKey, searchGraphic, OBJC_ASSOCIATION_RETAIN);
+		objc_setAssociatedObject(op, kSearchRangeKey, searchRange, OBJC_ASSOCIATION_RETAIN);
+		
+		[self.resultsLayer removeAllGraphics];
 		serviceArea.symbol = [AGSSimpleFillSymbol simpleFillSymbolWithColor:[[UIColor greenColor] colorWithAlphaComponent:0.5] outlineColor:nil];
 		[self.resultsLayer addGraphic:serviceArea];
 		[self.resultsLayer addGraphic:searchGraphic];
@@ -210,13 +217,93 @@
 	}
 }
 
+-(void)queryTask:(AGSQueryTask *)queryTask
+	   operation:(NSOperation *)op didExecuteWithFeatureSetResult:(AGSFeatureSet *)featureSet
+{
+	AGSGraphic *searchGraphic = objc_getAssociatedObject(op, kSearchPointKey);
+	NSNumber *searchRange = objc_getAssociatedObject(op, kSearchRangeKey);
+
+	if (featureSet.features.count >= 3)
+	{
+		if (featureSet.features.count > 100)
+		{
+			// Pare down the results
+			for (AGSGraphic *g in featureSet.features) {
+				double distanceFromSearchGraphic = [[AGSGeometryEngine defaultGeometryEngine] distanceFromGeometry:g.geometry toGeometry:searchGraphic.geometry];
+				[g setAttributeWithDouble:distanceFromSearchGraphic forKey:@"distanceToMe"];
+			}
+			
+			NSArray *sortedPoints = [featureSet.features sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2)
+			{
+				BOOL exists;
+				double d1 = [(AGSGraphic *)obj1 attributeAsDoubleForKey:@"distanceToMe" exists:&exists];
+				double d2 = [(AGSGraphic *)obj2 attributeAsDoubleForKey:@"distanceToMe" exists:&exists];
+				return d1==d2?NSOrderedSame:d1<d2?NSOrderedAscending:NSOrderedDescending;
+			}];
+			
+			NSMutableArray *closestPoints = [NSMutableArray array];
+			for (int i=0; i < 100; i++)
+			{
+				[closestPoints addObject:sortedPoints[i]];
+			}
+			
+			featureSet = [AGSFeatureSet featureSetWithFeatures:closestPoints];
+		}
+
+		// Get 3 nearest features
+		[self findNearest:3 features:featureSet within:self.driveTimeGraphic from:searchGraphic];
+	}
+	else
+	{
+		int range = searchRange.intValue;
+		if (range < kDriveTimeMaxRange)
+		{
+			range = range + kDriveTimeExpansionTime;
+			if (range > kDriveTimeMaxRange)
+			{
+				range = kDriveTimeMaxRange;
+			}
+			[self getConstraintAreaAroundPoint:searchGraphic withRange:range];
+		}
+		else
+		{
+			// Time to stop looking
+			NSLog(@"Reached max range and haven't found enough breweries. Giving up.");
+		}
+	}
+}
+
+-(void)queryTask:(AGSQueryTask *)queryTask operation:(NSOperation *)op didFailWithError:(NSError *)error
+{
+	NSLog(@"Couldn't get features: %@", error);
+	[self endAnimation];
+	self.mapView.layer.borderColor = [UIColor redColor].CGColor;
+}
+
 -(void)serviceAreaTask:(AGSServiceAreaTask *)serviceAreaTask operation:(NSOperation *)op didFailSolveWithError:(NSError *)error
 {
 	NSLog(@"Failed to find service area: %@", error);
+	[self endAnimation];
+	self.mapView.layer.borderColor = [UIColor redColor].CGColor;
 }
 
--(void)findNearest:(NSUInteger)count itemsToMapPointGraphic:(AGSGraphic *)mapPointGraphic
+-(void)serviceAreaTask:(AGSServiceAreaTask *)serviceAreaTask operation:(NSOperation *)op didRetrieveDefaultServiceAreaTaskParameters:(AGSServiceAreaTaskParameters *)serviceAreaParams
+{
+	NSLog(@"Got default drive time parameters");
+	self.defaultDriveTimeParams = serviceAreaParams;
+}
+
+-(void)serviceAreaTask:(AGSServiceAreaTask *)serviceAreaTask operation:(NSOperation *)op didFailToRetrieveDefaultServiceAreaTaskParametersWithError:(NSError *)error
+{
+	NSLog(@"Failed to get default service area parameters: %@", error);
+	[self endAnimation];
+	self.mapView.layer.borderColor = [UIColor redColor].CGColor;
+}
+
+-(void)findNearest:(NSUInteger)count
+		  features:(AGSFeatureSet *)featureSet
 			within:(AGSGraphic *)constraintGraphic
+			  from:(AGSGraphic *)mapPointGraphic
 {
 	// INIT PARAMETERS
 	AGSClosestFacilityTaskParameters *params = [AGSClosestFacilityTaskParameters closestFacilityTaskParameters];
@@ -230,10 +317,11 @@
 	
 	q.geometry = constraintGraphic.geometry.envelope;
 	
-	AGSNALayerDefinition *facilities = [[AGSNALayerDefinition alloc] initWithURL:self.featureServiceURL query:q];
+//	AGSNALayerDefinition *facilities = [[AGSNALayerDefinition alloc] initWithURL:self.featureServiceURL query:q];
 	
 	// END AT FEATURES IN THE FEATURE LAYER
-	[params setFacilitiesWithLayerDefinition:facilities];
+//	[params setFacilitiesWithLayerDefinition:facilities];
+	[params setFacilitiesWithFeatures:featureSet.features];
 	
 	params.travelDirection = AGSNATravelDirectionToFacility;
 	
@@ -247,8 +335,6 @@
 -(void)closestFacilityTask:(AGSClosestFacilityTask *)closestFacilityTask
 				 operation:(NSOperation *)op didSolveClosestFacilityWithResult:(AGSClosestFacilityTaskResult *)closestFacilityTaskResult
 {
-	[self endAnimation];
-
 	NSMutableArray *allGeoms = [NSMutableArray array];
     for (AGSClosestFacilityResult *result in closestFacilityTaskResult.closestFacilityResults)
     {
@@ -267,6 +353,8 @@
 	AGSMutableEnvelope *e = [totalGeom.envelope mutableCopy];
 	[e expandByFactor:1.3];
 	[self.mapView zoomToEnvelope:e animated:YES];
+
+	[self endAnimation];
 
 	self.clearResultsButton.alpha = 0;
 	self.clearResultsButton.hidden = NO;
@@ -291,8 +379,8 @@
 				 operation:(NSOperation *)op
 	 didFailSolveWithError:(NSError *)error
 {
-	[self endAnimation];
     NSLog(@"Couldn't find 3 closest features: %@", error.localizedFailureReason);
+	[self endAnimation];
 	self.mapView.layer.borderColor = [UIColor redColor].CGColor;
 }
 
