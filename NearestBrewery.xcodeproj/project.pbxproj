@@ -343,10 +343,7 @@
 		D9F3D1D11668271A00FB6A8D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(HOME)/Library/SDKs/ArcGIS/iOS/**",
-					"$(HOME)/Library/SDKs/Firebase/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/SDKs/ArcGIS/iOS/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AGSCommonPatternsSample/NearestBrewery-Prefix.pch";
 				INFOPLIST_FILE = "AGSCommonPatternsSample/NearestBrewery-Info.plist";
@@ -356,8 +353,6 @@
 					"-ObjC",
 					"-framework",
 					ArcGIS,
-					"-framework",
-					Firebase,
 				);
 				PRODUCT_NAME = Breweries;
 				VALID_ARCHS = armv7;
@@ -368,10 +363,7 @@
 		D9F3D1D21668271A00FB6A8D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(HOME)/Library/SDKs/ArcGIS/iOS/**",
-					"$(HOME)/Library/SDKs/Firebase/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/SDKs/ArcGIS/iOS/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AGSCommonPatternsSample/NearestBrewery-Prefix.pch";
 				INFOPLIST_FILE = "AGSCommonPatternsSample/NearestBrewery-Info.plist";
@@ -380,8 +372,6 @@
 					"-ObjC",
 					"-framework",
 					ArcGIS,
-					"-framework",
-					Firebase,
 				);
 				PRODUCT_NAME = Breweries;
 				VALID_ARCHS = armv7;

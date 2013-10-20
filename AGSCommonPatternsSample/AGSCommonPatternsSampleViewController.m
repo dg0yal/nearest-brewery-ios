@@ -331,6 +331,18 @@
 	objc_setAssociatedObject(op, kSearchPointKey, mapPointGraphic, OBJC_ASSOCIATION_RETAIN);
 }
 
+- (IBAction)zoomCtrlTapped:(id)sender {
+    UISegmentedControl *ctrl = sender;
+    if (ctrl.selectedSegmentIndex == 0)
+    {
+        [self.mapView zoomOut:YES];
+    }
+    else
+    {
+        [self.mapView zoomIn:YES];
+    }
+}
+
 #pragma mark - CFS Callbacks
 -(void)closestFacilityTask:(AGSClosestFacilityTask *)closestFacilityTask
 				 operation:(NSOperation *)op didSolveClosestFacilityWithResult:(AGSClosestFacilityTaskResult *)closestFacilityTaskResult
@@ -385,6 +397,12 @@
 }
 
 
+- (void)viewDidUnload {
+	[self setClearResultsButton:nil];
+	[super viewDidUnload];
+}
+
+
 #pragma mark - UI Stuff
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -394,8 +412,8 @@
 -(void)configUI
 {
 	[self.mapView.layer setMasksToBounds:YES];
-    self.mapView.layer.cornerRadius = 20;
-    self.mapView.layer.borderWidth = 7.5;
+    self.mapView.layer.cornerRadius = 10;
+    self.mapView.layer.borderWidth = 3;
     self.mapView.layer.borderColor = [UIColor orangeColor].CGColor;
 }
 
@@ -420,10 +438,13 @@
 												  blue:0.47
 												 alpha:1].CGColor;
 	CABasicAnimation *cornerAnimation = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
-	cornerAnimation.toValue = (id)[NSNumber numberWithDouble:50];
-
+	cornerAnimation.toValue = (id)[NSNumber numberWithDouble:20];
+    
+    CABasicAnimation *widthAnimation = [CABasicAnimation animationWithKeyPath:@"borderWidth"];
+	widthAnimation.toValue = (id)[NSNumber numberWithDouble:4];
+    
 	CAAnimationGroup *animation = [CAAnimationGroup animation];
-	animation.animations = @[colorAnimation, cornerAnimation];
+	animation.animations = @[colorAnimation, cornerAnimation, widthAnimation];
 	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	animation.autoreverses = YES;
 	animation.delegate = self;
@@ -441,8 +462,10 @@
 	}
 }
 
-- (void)viewDidUnload {
-	[self setClearResultsButton:nil];
-	[super viewDidUnload];
+#pragma mark - iOS 7 config
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
+
 @end
