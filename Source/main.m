@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "AGSCommonPatternsSampleAppDelegate.h"
+#import "AGSNearestBreweryAppDelegate.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AGSCommonPatternsSampleAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AGSNearestBreweryAppDelegate class]));
     }
 }

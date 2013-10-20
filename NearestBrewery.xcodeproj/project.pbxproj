@@ -16,13 +16,13 @@
 		D9F3D1B21668271A00FB6A8D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3D1B11668271A00FB6A8D /* CoreGraphics.framework */; };
 		D9F3D1B81668271A00FB6A8D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D9F3D1B61668271A00FB6A8D /* InfoPlist.strings */; };
 		D9F3D1BA1668271A00FB6A8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F3D1B91668271A00FB6A8D /* main.m */; };
-		D9F3D1BE1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F3D1BD1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.m */; };
+		D9F3D1BE1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F3D1BD1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.m */; };
 		D9F3D1C01668271A00FB6A8D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D9F3D1BF1668271A00FB6A8D /* Default.png */; };
 		D9F3D1C21668271A00FB6A8D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9F3D1C11668271A00FB6A8D /* Default@2x.png */; };
 		D9F3D1C41668271A00FB6A8D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9F3D1C31668271A00FB6A8D /* Default-568h@2x.png */; };
 		D9F3D1C71668271A00FB6A8D /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F3D1C51668271A00FB6A8D /* MainStoryboard_iPhone.storyboard */; };
 		D9F3D1CA1668271A00FB6A8D /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F3D1C81668271A00FB6A8D /* MainStoryboard_iPad.storyboard */; };
-		D9F3D1CD1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F3D1CC1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.m */; };
+		D9F3D1CD1668271A00FB6A8D /* AGSNearestBreweryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F3D1CC1668271A00FB6A8D /* AGSNearestBreweryViewController.m */; };
 		D9F3D1DB166828A600FB6A8D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3D1D3166828A600FB6A8D /* CoreLocation.framework */; };
 		D9F3D1DC166828A600FB6A8D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3D1D4166828A600FB6A8D /* CoreText.framework */; };
 		D9F3D1DE166828A600FB6A8D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F3D1D6166828A600FB6A8D /* libz.dylib */; };
@@ -50,15 +50,15 @@
 		D9F3D1B71668271A00FB6A8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D9F3D1B91668271A00FB6A8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D9F3D1BB1668271A00FB6A8D /* NearestBrewery-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NearestBrewery-Prefix.pch"; sourceTree = "<group>"; };
-		D9F3D1BC1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGSCommonPatternsSampleAppDelegate.h; sourceTree = "<group>"; };
-		D9F3D1BD1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGSCommonPatternsSampleAppDelegate.m; sourceTree = "<group>"; };
+		D9F3D1BC1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGSNearestBreweryAppDelegate.h; sourceTree = "<group>"; };
+		D9F3D1BD1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGSNearestBreweryAppDelegate.m; sourceTree = "<group>"; };
 		D9F3D1BF1668271A00FB6A8D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		D9F3D1C11668271A00FB6A8D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		D9F3D1C31668271A00FB6A8D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D9F3D1C61668271A00FB6A8D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		D9F3D1C91668271A00FB6A8D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		D9F3D1CB1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGSCommonPatternsSampleViewController.h; sourceTree = "<group>"; };
-		D9F3D1CC1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGSCommonPatternsSampleViewController.m; sourceTree = "<group>"; };
+		D9F3D1CB1668271A00FB6A8D /* AGSNearestBreweryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGSNearestBreweryViewController.h; sourceTree = "<group>"; };
+		D9F3D1CC1668271A00FB6A8D /* AGSNearestBreweryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGSNearestBreweryViewController.m; sourceTree = "<group>"; };
 		D9F3D1D3166828A600FB6A8D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D9F3D1D4166828A600FB6A8D /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		D9F3D1D6166828A600FB6A8D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -112,7 +112,7 @@
 		D9F3D19E1668271900FB6A8D = {
 			isa = PBXGroup;
 			children = (
-				D9F3D1B31668271A00FB6A8D /* AGSCommonPatternsSample */,
+				D9F3D1B31668271A00FB6A8D /* Source */,
 				D9F3D1AC1668271A00FB6A8D /* Frameworks */,
 				D9F3D1AA1668271A00FB6A8D /* Products */,
 			);
@@ -147,18 +147,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D9F3D1B31668271A00FB6A8D /* AGSCommonPatternsSample */ = {
+		D9F3D1B31668271A00FB6A8D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D9F3D1BC1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.h */,
-				D9F3D1BD1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.m */,
+				D9F3D1BC1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.h */,
+				D9F3D1BD1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.m */,
 				D9F3D1C51668271A00FB6A8D /* MainStoryboard_iPhone.storyboard */,
 				D9F3D1C81668271A00FB6A8D /* MainStoryboard_iPad.storyboard */,
-				D9F3D1CB1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.h */,
-				D9F3D1CC1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.m */,
+				D9F3D1CB1668271A00FB6A8D /* AGSNearestBreweryViewController.h */,
+				D9F3D1CC1668271A00FB6A8D /* AGSNearestBreweryViewController.m */,
 				D9F3D1B41668271A00FB6A8D /* Supporting Files */,
 			);
-			path = AGSCommonPatternsSample;
+			path = Source;
 			sourceTree = SOURCE_ROOT;
 		};
 		D9F3D1B41668271A00FB6A8D /* Supporting Files */ = {
@@ -251,8 +251,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9F3D1BA1668271A00FB6A8D /* main.m in Sources */,
-				D9F3D1BE1668271A00FB6A8D /* AGSCommonPatternsSampleAppDelegate.m in Sources */,
-				D9F3D1CD1668271A00FB6A8D /* AGSCommonPatternsSampleViewController.m in Sources */,
+				D9F3D1BE1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.m in Sources */,
+				D9F3D1CD1668271A00FB6A8D /* AGSNearestBreweryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,8 +345,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/SDKs/ArcGIS/iOS/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AGSCommonPatternsSample/NearestBrewery-Prefix.pch";
-				INFOPLIST_FILE = "AGSCommonPatternsSample/NearestBrewery-Info.plist";
+				GCC_PREFIX_HEADER = "Source/NearestBrewery-Prefix.pch";
+				INFOPLIST_FILE = "Source/NearestBrewery-Info.plist";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -365,8 +365,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/SDKs/ArcGIS/iOS/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AGSCommonPatternsSample/NearestBrewery-Prefix.pch";
-				INFOPLIST_FILE = "AGSCommonPatternsSample/NearestBrewery-Info.plist";
+				GCC_PREFIX_HEADER = "Source/NearestBrewery-Prefix.pch";
+				INFOPLIST_FILE = "Source/NearestBrewery-Info.plist";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",

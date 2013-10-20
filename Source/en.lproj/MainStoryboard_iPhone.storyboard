@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
-        <!--Common Patterns Sample View Controller-->
+        <!--Nearest Brewery View Controller-->
         <scene sceneID="5">
             <objects>
-                <viewController id="2" customClass="AGSCommonPatternsSampleViewController" sceneMemberID="viewController">
+                <viewController id="2" customClass="AGSNearestBreweryViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

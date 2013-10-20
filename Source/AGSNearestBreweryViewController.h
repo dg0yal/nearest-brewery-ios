@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AGSCommonPatternsSampleViewController : UIViewController
+@interface AGSNearestBreweryViewController : UIViewController
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 ESRI. All rights reserved.
 //
 
-#import "AGSCommonPatternsSampleAppDelegate.h"
+#import "AGSNearestBreweryAppDelegate.h"
 
-@implementation AGSCommonPatternsSampleAppDelegate
+@implementation AGSNearestBreweryAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

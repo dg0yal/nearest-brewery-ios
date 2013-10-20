@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 ESRI. All rights reserved.
 //
 
-#import "AGSCommonPatternsSampleViewController.h"
+#import "AGSNearestBreweryViewController.h"
 #import <ArcGIS/ArcGIS.h>
 #import <objc/runtime.h>
 
@@ -20,7 +20,7 @@
 #import "AGOLCredentials.h"
 #endif
 
-@interface AGSCommonPatternsSampleViewController () <AGSWebMapDelegate,
+@interface AGSNearestBreweryViewController () <AGSWebMapDelegate,
 													 AGSMapViewTouchDelegate,
 													 AGSMapViewCalloutDelegate,
 													 AGSClosestFacilityTaskDelegate,
@@ -47,7 +47,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *clearResultsButton;
 @end
 
-@implementation AGSCommonPatternsSampleViewController
+@implementation AGSNearestBreweryViewController
 #define kDriveTimeTaskURL @"https://route.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World"
 #define kClosestFacilityTaskURL @"http://route.arcgis.com/arcgis/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World"
 #define kWebMapID @"8c4288bb0da4493aa85947d7a400a952"
