@@ -22,7 +22,6 @@
 
 @interface AGSNearestBreweryViewController () <AGSWebMapDelegate,
 													 AGSMapViewTouchDelegate,
-													 AGSMapViewCalloutDelegate,
 													 AGSClosestFacilityTaskDelegate,
 													 AGSServiceAreaTaskDelegate,
 													 AGSQueryTaskDelegate,
@@ -112,7 +111,6 @@
 
 	// Listen for taps
     self.mapView.touchDelegate = self;
-	self.mapView.calloutDelegate = self;
 }
 
 -(BOOL)mapView:(AGSMapView *)mapView shouldShowCalloutForGraphic:(AGSGraphic *)graphic
@@ -137,11 +135,10 @@
 		// Show where I tapped
 		AGSGraphic *g = [AGSGraphic graphicWithGeometry:mappoint
 												 symbol:self.symbol
-											 attributes:nil
-								   infoTemplateDelegate:nil];
+											 attributes:nil];
 		[self.resultsLayer addGraphic:g];
 		
-		[self startAnimation];
+//		[self startAnimation];
 		
 		// Get a drivetime area first to limit the features we're dealing with.
 		[self getConstraintAreaAroundPoint:g withRange:kDriveTimeInitialRangeInMinutes];

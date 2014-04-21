@@ -38,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D902D6AD1904C03C00081558 /* AGOLCredentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGOLCredentials.h; sourceTree = "<group>"; };
 		D9A8B11816BB27B9001653EE /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		D9A8B11A16BB27BF001653EE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		D9E7783316F8BE37006DC0F6 /* fingerprint.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fingerprint.png; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 		D9F3D1B31668271A00FB6A8D /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D902D6AD1904C03C00081558 /* AGOLCredentials.h */,
 				D9F3D1BC1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.h */,
 				D9F3D1BD1668271A00FB6A8D /* AGSNearestBreweryAppDelegate.m */,
 				D9F3D1C51668271A00FB6A8D /* MainStoryboard_iPhone.storyboard */,
@@ -343,16 +345,18 @@
 		D9F3D1D11668271A00FB6A8D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/SDKs/ArcGIS/iOS/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Source/NearestBrewery-Prefix.pch";
 				INFOPLIST_FILE = "Source/NearestBrewery-Info.plist";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
-					"-all_load",
 					"-ObjC",
 					"-framework",
 					ArcGIS,
+					"-l",
+					"c++",
 				);
 				PRODUCT_NAME = Breweries;
 				VALID_ARCHS = armv7;
@@ -363,15 +367,17 @@
 		D9F3D1D21668271A00FB6A8D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(HOME)/Library/SDKs/ArcGIS/iOS/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Source/NearestBrewery-Prefix.pch";
 				INFOPLIST_FILE = "Source/NearestBrewery-Info.plist";
 				OTHER_LDFLAGS = (
-					"-all_load",
 					"-ObjC",
 					"-framework",
 					ArcGIS,
+					"-l",
+					"c++",
 				);
 				PRODUCT_NAME = Breweries;
 				VALID_ARCHS = armv7;
