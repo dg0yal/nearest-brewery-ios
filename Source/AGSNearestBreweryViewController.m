@@ -138,7 +138,7 @@
 											 attributes:nil];
 		[self.resultsLayer addGraphic:g];
 		
-//		[self startAnimation];
+		[self startAnimation];
 		
 		// Get a drivetime area first to limit the features we're dealing with.
 		[self getConstraintAreaAroundPoint:g withRange:kDriveTimeInitialRangeInMinutes];
