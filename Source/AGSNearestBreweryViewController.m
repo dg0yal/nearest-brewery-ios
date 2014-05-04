@@ -69,6 +69,8 @@
 	self.mapView.allowRotationByPinching = YES;
 	
 	self.mapView.callout.accessoryButtonHidden = YES;
+    
+    [self.mapView enableWrapAround];
 }
 
 -(void)webMap:(AGSWebMap *)webMap didLoadLayer:(AGSLayer *)layer

@@ -7,6 +7,7 @@
 //
 
 #import "AGSNearestBreweryAppDelegate.h"
+#import <ArcGIS/ArcGIS.h>
 
 @implementation AGSNearestBreweryAppDelegate
 
@@ -14,6 +15,12 @@
 {
     // Override point for customization after application launch.
     [application setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    NSError *error = nil;
+    [AGSRuntimeEnvironment setClientID:@"IAme1UYrmEBOG23x" error:&error];
+    if (error) {
+        NSLog(@"Couldn't register license! %@", error);
+        return NO;
+    }
     return YES;
 }
 							
